@@ -109,6 +109,16 @@ export class CommerceService implements OnModuleInit, OnModuleDestroy {
       throw new BadRequestException('Choose MY DIU delivery or vendor-managed delivery');
     }
     if (!dto.deliveryAddress) throw new BadRequestException('A complete delivery address is required');
+    const deliveryAddress: Prisma.InputJsonObject = {
+      line1: dto.deliveryAddress.line1,
+      ...(dto.deliveryAddress.line2 !== undefined ? { line2: dto.deliveryAddress.line2 } : {}),
+      locality: dto.deliveryAddress.locality,
+      city: dto.deliveryAddress.city,
+      state: dto.deliveryAddress.state,
+      postalCode: dto.deliveryAddress.postalCode,
+      contactName: dto.deliveryAddress.contactName,
+      phone: dto.deliveryAddress.phone,
+    };
 
     await this.expirePendingCheckouts();
     const pending = await this.prisma.checkoutSession.findFirst({
@@ -146,7 +156,7 @@ export class CommerceService implements OnModuleInit, OnModuleDestroy {
       }, 0);
       if (!Number.isSafeInteger(amountPaise) || amountPaise <= 0) throw new BadRequestException('Checkout amount is invalid');
       const session = await tx.checkoutSession.create({ data: {
-        customerId, amountPaise, fulfilment: dto.fulfilment, deliveryAddress: dto.deliveryAddress as Prisma.InputJsonValue | undefined,
+        customerId, amountPaise, fulfilment: dto.fulfilment, deliveryAddress,
         notes: dto.notes, expiresAt,
       } });
       await tx.payment.create({ data: {
@@ -160,7 +170,7 @@ export class CommerceService implements OnModuleInit, OnModuleDestroy {
           orderNumber: `MD${Date.now().toString(36).toUpperCase()}${randomBytes(4).toString('hex').toUpperCase()}`,
           customerId, businessId, checkoutSessionId: session.id, status: OrderStatus.PENDING_PAYMENT,
           fulfilment: dto.fulfilment, subtotalPaise, deliveryFeePaise, discountPaise: 0, totalPaise: subtotalPaise + deliveryFeePaise,
-          deliveryAddress: dto.deliveryAddress as Prisma.InputJsonValue, notes: dto.notes,
+          deliveryAddress,
           items: { create: group.map((item: any) => ({
             productId: item.productId, productName: item.product.name, quantity: item.quantity,
             unitPricePaise: item.product.pricePaise, lineTotalPaise: item.product.pricePaise * item.quantity,

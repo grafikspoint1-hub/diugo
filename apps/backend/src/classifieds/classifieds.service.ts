@@ -99,7 +99,7 @@ export class ClassifiedsService {
       PAUSED: [ClassifiedListingStatus.ACTIVE, ClassifiedListingStatus.SOLD],
       SOLD: [], EXPIRED: [], REMOVED: [],
     };
-    const currentStatus = listing.status as ClassifiedListingStatus;
+    const currentStatus: ClassifiedListingStatus = listing.status;
     if (!transitions[currentStatus].includes(status)) throw new ConflictException(`Cannot change a ${currentStatus.toLowerCase()} listing to ${status.toLowerCase()}; renew expired listings first`);
     if (status === ClassifiedListingStatus.ACTIVE && listing.expiresAt <= new Date()) throw new ConflictException('This listing expired; renew it to publish again');
     return this.prisma.classifiedListing.update({ where: { id }, data: { status }, include: publicListing });
