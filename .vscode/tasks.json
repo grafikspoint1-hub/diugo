@@ -1,0 +1,26 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "MY DIU backend dev server",
+			"type": "shell",
+			"command": "npm run dev:backend",
+			"isBackground": true,
+			"problemMatcher": []
+		},
+		{
+			"label": "MY DIU backend dev server (npm.cmd)",
+			"type": "shell",
+			"command": "npm.cmd run dev:backend",
+			"isBackground": true,
+			"problemMatcher": []
+		},
+		{
+			"label": "MY DIU website preview",
+			"type": "shell",
+			"command": "npm.cmd run dev:website",
+			"isBackground": true,
+			"problemMatcher": []
+		}
+	]
+}

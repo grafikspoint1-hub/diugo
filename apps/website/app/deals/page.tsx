@@ -1,0 +1,2 @@
+import Link from 'next/link';
+export default function DealsPage() { return <main className="shell section"><div className="sectionhead"><div><div className="kicker">Offers & rewards</div><h1>Offers in Diu</h1><p className="muted">Verified promotions from approved partners will be listed here.</p></div><Link className="button secondary-button" href="/">Back home</Link></div><div className="empty">No verified offers are available yet. Coupons and rewards are not active in this preview.</div></main>; }

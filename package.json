@@ -1,0 +1,22 @@
+{
+  "name": "my-diu-monorepo",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build:backend": "npm run build --workspace my-diu-backend",
+    "dev:backend": "npm run start:dev --workspace my-diu-backend",
+    "dev:website": "npm run dev --workspace @mydiu/website",
+    "build:website": "npm run build --workspace @mydiu/website",
+    "typecheck:website": "npm run typecheck --workspace @mydiu/website"
+  },
+  "allowScripts": {
+    "prisma": true,
+    "@prisma/client": true,
+    "@prisma/engines": true,
+    "@nestjs/core": true
+  }
+}

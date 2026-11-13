@@ -1,0 +1,13 @@
+.env
+node_modules/
+dist/
+build/
+.next/
+coverage/
+*.log
+*.tsbuildinfo
+preview-homepage.png
+
+# Local database backups
+/backups/
+*.dump
